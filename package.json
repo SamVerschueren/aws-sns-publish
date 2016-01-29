@@ -1,0 +1,38 @@
+{
+  "name": "aws-sns-publish",
+  "version": "0.0.0",
+  "description": "Publish messages to AWS SNS",
+  "license": "MIT",
+  "repository": "SamVerschueren/aws-sns-publish",
+  "author": {
+    "name": "Sam Verschueren",
+    "email": "sam.verschueren@gmail.com",
+    "url": "github.com/SamVerschueren"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "xo && ava"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "aws",
+    "sns",
+    "publish"
+  ],
+  "dependencies": {
+    "aws-sdk": "^2.2.33",
+    "is-obj": "^1.0.0",
+    "is-sns-topic-arn": "^1.0.0",
+    "pify": "^2.3.0",
+    "pinkie-promise": "^2.0.0"
+  },
+  "devDependencies": {
+    "ava": "*",
+    "sinon": "^1.17.2",
+    "xo": "*"
+  }
+}
