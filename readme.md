@@ -9,6 +9,8 @@
 $ npm install --save aws-sns-publish
 ```
 
+If you are running outside AWS Lambda, make sure to install the [aws-sdk](https://github.com/aws/aws-sdk-js) as well. The SDK is not shipped with this library.
+
 
 ## Usage
 

@@ -24,7 +24,6 @@
     "publish"
   ],
   "dependencies": {
-    "aws-sdk": "^2.2.33",
     "is-obj": "^1.0.0",
     "is-sns-topic-arn": "^1.0.0",
     "pify": "^2.3.0",
@@ -32,6 +31,7 @@
   },
   "devDependencies": {
     "ava": "*",
+    "aws-sdk": "^2.2.33",
     "sinon": "^1.17.2",
     "xo": "*"
   }
