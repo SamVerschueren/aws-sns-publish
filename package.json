@@ -10,7 +10,7 @@
     "url": "github.com/SamVerschueren"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=4"
   },
   "scripts": {
     "test": "xo && ava"
@@ -26,13 +26,15 @@
   "dependencies": {
     "is-obj": "^1.0.0",
     "is-sns-topic-arn": "^1.0.0",
-    "pify": "^2.3.0",
-    "pinkie-promise": "^2.0.0"
+    "pify": "^2.3.0"
   },
   "devDependencies": {
     "ava": "*",
     "aws-sdk": "^2.2.33",
     "sinon": "^1.17.2",
     "xo": "*"
+  },
+  "xo": {
+    "esnext": true
   }
 }

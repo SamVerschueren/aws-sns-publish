@@ -1,13 +1,12 @@
 'use strict';
-var AWS = require('aws-sdk');
-var pify = require('pify');
-var Promise = require('pinkie-promise');
-var isTopicArn = require('is-sns-topic-arn');
-var isObject = require('is-obj');
+const AWS = require('aws-sdk');
+const pify = require('pify');
+const isTopicArn = require('is-sns-topic-arn');
+const isObject = require('is-obj');
 
-var sns = new AWS.SNS();
+const sns = new AWS.SNS();
 
-module.exports = function (message, opts) {
+module.exports = (message, opts) => {
 	opts = opts || {};
 
 	if (!message) {
@@ -18,18 +17,15 @@ module.exports = function (message, opts) {
 		return Promise.reject(new Error('Please provide an arn'));
 	}
 
-	var arnType = isTopicArn(opts.arn) ? 'TopicArn' : 'TargetArn';
-	var params = {
-		Message: opts.json !== true && isObject(message) ? JSON.stringify(message) : message
+	const arnType = isTopicArn(opts.arn) ? 'TopicArn' : 'TargetArn';
+	const params = {
+		Message: opts.json !== true && isObject(message) ? JSON.stringify(message) : message,
+		[arnType]: opts.arn
 	};
-
-	params[arnType] = opts.arn;
 
 	if (opts.subject) {
 		params.Subject = opts.subject;
 	}
 
-	return pify(sns.publish.bind(sns), Promise)(params).then(function (data) {
-		return data.MessageId;
-	});
+	return pify(sns.publish.bind(sns))(params).then(data => data.MessageId);
 };

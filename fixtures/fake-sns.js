@@ -1,16 +1,14 @@
 'use strict';
-var AWS = require('aws-sdk');
+const AWS = require('aws-sdk');
 
-// SNS
-function SNS() {
+class SNS {
 
+	publish(opts, cb) {
+		cb(undefined, {MessageId: '8a98f4d0-078b-5176-9af2-bbd871660ecb'});
+	}
 }
 
-SNS.prototype.publish = function (opts, cb) {
-	cb(undefined, {MessageId: '8a98f4d0-078b-5176-9af2-bbd871660ecb'});
-};
-
-var sns = new SNS();
+const sns = new SNS();
 
 AWS.SNS = function () {
 	return sns;
