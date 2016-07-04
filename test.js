@@ -37,7 +37,7 @@ test('subject', async t => {
 test.serial('object', async t => {
 	await m({foo: 'bar'}, {arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic'});
 
-	t.same(sns.publish.lastCall.args[0], {
+	t.deepEqual(sns.publish.lastCall.args[0], {
 		Message: '{"foo":"bar"}',
 		TopicArn: 'arn:aws:sns:us-west-2:111122223333:MyTopic'
 	});
@@ -46,7 +46,7 @@ test.serial('object', async t => {
 test.serial('json', async t => {
 	await m({foo: 'bar'}, {arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic', json: true});
 
-	t.same(sns.publish.lastCall.args[0], {
+	t.deepEqual(sns.publish.lastCall.args[0], {
 		Message: {foo: 'bar'},
 		TopicArn: 'arn:aws:sns:us-west-2:111122223333:MyTopic'
 	});
