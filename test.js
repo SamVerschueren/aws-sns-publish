@@ -17,9 +17,9 @@ test.after(() => {
 	sandbox.restore();
 });
 
-test('error', t => {
-	t.throws(m(), 'Please provide a message');
-	t.throws(m('message'), 'Please provide an arn');
+test('error', async t => {
+	await t.throws(m(), 'Please provide a message');
+	await t.throws(m('message'), 'Please provide an arn');
 });
 
 test('topic', async t => {
