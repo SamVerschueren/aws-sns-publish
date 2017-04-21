@@ -1,4 +1,7 @@
-# aws-sns-publish [![Build Status](https://travis-ci.org/SamVerschueren/aws-sns-publish.svg?branch=master)](https://travis-ci.org/SamVerschueren/aws-sns-publish)
+# aws-sns-publish
+
+[![Build Status](https://travis-ci.org/SamVerschueren/aws-sns-publish.svg?branch=master)](https://travis-ci.org/SamVerschueren/aws-sns-publish)
+[![Coverage Status](https://coveralls.io/repos/github/SamVerschueren/aws-sns-publish/badge.svg?branch=master)](https://coveralls.io/github/SamVerschueren/aws-sns-publish?branch=master)
 
 > Publish messages to [AWS SNS](https://aws.amazon.com/sns)
 
