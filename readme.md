@@ -26,6 +26,11 @@ snsPublish('Hello World', {arn: 'arn:aws:sns:us-west-2:111122223333:app/GCM/MyAp
 	console.log(messageId);
 	//=> '7b77f4d0-078b-5176-9af2-ccd871660ecb'
 });
+
+snsPublish('SMS Message', {phone: '+14155552671'}).then(messageId => {
+	console.log(messageId);
+	//=> '6014fe16-26c1-11e7-93ae-92361f002671'
+});
 ```
 
 
@@ -45,10 +50,15 @@ Message that should be send to the topic.
 
 ##### arn
 
-*Required*<br>
 Type: `string`
 
 Topic or target ARN you want to publish to. The type is automatically detected.
+
+##### phone
+
+Type: `string`
+
+Phone number to which you want to deliver an SMS message. Use [E.164 format](https://en.wikipedia.org/wiki/E.164).
 
 ##### subject
 

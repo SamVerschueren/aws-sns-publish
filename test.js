@@ -1,25 +1,11 @@
 import test from 'ava';
-import sinon from 'sinon';
-import sns from './fixtures/fake-sns';
+import sns from './fixtures/stub-sns';
 import m from './';
-
-const sandbox = sinon.sandbox.create();
-
-test.before(() => {
-	const stub = sandbox.stub(sns, 'publish');
-	stub.withArgs({Message: 'foo', TopicArn: 'arn:aws:sns:us-west-2:111122223333:MyTopic'}).yields(undefined, {MessageId: 'foo'});
-	stub.withArgs({Message: 'foo', TargetArn: 'arn:aws:sns:us-west-2:111122223333:GCM/MyTopic'}).yields(undefined, {MessageId: 'bar'});
-	stub.withArgs({Message: 'foo', TopicArn: 'arn:aws:sns:us-west-2:111122223333:MyTopic', Subject: 'Hello World'}).yields(undefined, {MessageId: 'baz'});
-	stub.yields(undefined, {MessageId: 'bla'});
-});
-
-test.after(() => {
-	sandbox.restore();
-});
 
 test('error', async t => {
 	await t.throws(m(), 'Please provide a message');
-	await t.throws(m('message'), 'Please provide an arn');
+	await t.throws(m('message'), 'Please provide an `arn` or a `phone` number');
+	await t.throws(m('message', {phone: '021'}), 'Provided number `021` is not a valid E. 164 phone number');
 });
 
 test('topic', async t => {
@@ -32,6 +18,14 @@ test('application', async t => {
 
 test('subject', async t => {
 	t.is(await m('foo', {arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic', subject: 'Hello World'}), 'baz');
+});
+
+test('phone number', async t => {
+	t.is(await m('foo', {phone: '+14155552671'}), 'phone');
+});
+
+test('phone number and topic', async t => {
+	t.is(await m('foo', {phone: '+14155552671', arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic'}), 'phonearn');
 });
 
 test.serial('object', async t => {
@@ -49,5 +43,16 @@ test.serial('json', async t => {
 	t.deepEqual(sns.publish.lastCall.args[0], {
 		Message: {foo: 'bar'},
 		TopicArn: 'arn:aws:sns:us-west-2:111122223333:MyTopic'
+	});
+});
+
+test.serial('phone, topic and subject', async t => {
+	await m({foo: 'bar'}, {phone: '+14155552671', arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic', subject: 'MySubject', json: true});
+
+	t.deepEqual(sns.publish.lastCall.args[0], {
+		Message: {foo: 'bar'},
+		TopicArn: 'arn:aws:sns:us-west-2:111122223333:MyTopic',
+		PhoneNumber: '+14155552671',
+		Subject: 'MySubject'
 	});
 });

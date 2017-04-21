@@ -24,6 +24,7 @@
     "publish"
   ],
   "dependencies": {
+    "is-e164-phone-number": "^1.0.0",
     "is-obj": "^1.0.0",
     "is-sns-topic-arn": "^1.0.0",
     "pify": "^2.3.0"
@@ -33,8 +34,5 @@
     "aws-sdk": "^2.2.33",
     "sinon": "^1.17.2",
     "xo": "*"
-  },
-  "xo": {
-    "esnext": true
   }
 }
