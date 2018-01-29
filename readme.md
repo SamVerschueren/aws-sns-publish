@@ -30,6 +30,11 @@ snsPublish('Hello World', {arn: 'arn:aws:sns:us-west-2:111122223333:app/GCM/MyAp
 	//=> '7b77f4d0-078b-5176-9af2-ccd871660ecb'
 });
 
+snsPublish('SMS Message', {name: 'MyTopic', region: 'eu-west-1', accountId: '111122223333'}).then(messageId => {
+	console.log(messageId);
+	//=> '47ff59e2-04e3-11e8-ba89-0ed5f89f718b'
+});
+
 snsPublish('SMS Message', {phone: '+14155552671'}).then(messageId => {
 	console.log(messageId);
 	//=> '6014fe16-26c1-11e7-93ae-92361f002671'
@@ -57,6 +62,12 @@ Type: `string`
 
 Topic or target ARN you want to publish to. The type is automatically detected.
 
+##### name
+
+Type: `string`
+
+Name of the topic ARN you want to publish to. If used, `region` and `accountId` are mandatory.
+
 ##### phone
 
 Type: `string`
@@ -69,12 +80,26 @@ Type: `string`
 
 Subject of the message when delivered to email endpoints.
 
-#### json
+##### json
 
 Type: `boolean`<br>
 Default: `false`
 
 Set to `true` if you want to send a different message for each protocol.
+
+##### region
+
+Type: `string`<br>
+Default: `process.env.AWS_REGION`
+
+Region used when constructing the topic ARN when `name` is being used.
+
+##### accountId
+
+Type: `string`<br>
+Default: `process.env.AWS_ACCOUNT_ID`
+
+AWS Account Id used when constructing the topic ARN when `name` is being used.
 
 
 ## License

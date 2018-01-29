@@ -2,9 +2,19 @@ import test from 'ava';
 import sns from './fixtures/stub-sns';
 import m from './';
 
+test.beforeEach(() => {
+	delete process.env.AWS_ACCOUNT_ID;
+	delete process.env.AWS_REGION;
+});
+
 test('error', async t => {
 	await t.throws(m(), 'Please provide a message');
-	await t.throws(m('message'), 'Please provide an `arn` or a `phone` number');
+	await t.throws(m('message'), 'Please provide an `arn`, `name` or `phone` number');
+	await t.throws(m('message', {name: 'f!'}), 'Provided topic name `f!` is not valid');
+	await t.throws(m('message', {name: 'foo/bar'}), 'Provided topic name `foo/bar` is not valid');
+	await t.throws(m('message', {name: 'foo'}), 'Provide a valid AWS account ID');
+	await t.throws(m('message', {name: 'foo', accountId: '1234'}), 'Provide a valid AWS account ID');
+	await t.throws(m('message', {name: 'foo', accountId: '123456789012'}), 'Provide a `region`');
 	await t.throws(m('message', {phone: '021'}), 'Provided number `021` is not a valid E. 164 phone number');
 });
 
@@ -18,6 +28,19 @@ test('application', async t => {
 
 test('subject', async t => {
 	t.is(await m('foo', {arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic', subject: 'Hello World'}), 'baz');
+});
+
+test('name', async t => {
+	t.is(await m('foo', {name: 'MyTopic', accountId: '123456789012', region: 'eu-west-1'}), 'name eu');
+	t.is(await m('foo', {name: 'MyTopic', accountId: '123456789012', region: 'us-west-2'}), 'name us');
+});
+
+test.serial('name with environment variables set', async t => {
+	process.env.AWS_ACCOUNT_ID = '123456789012';
+	process.env.AWS_REGION = 'eu-west-1';
+
+	t.is(await m('foo', {name: 'MyTopic'}), 'name eu');
+	t.is(await m('foo', {name: 'MyTopic', region: 'us-west-2'}), 'name us');
 });
 
 test('phone number', async t => {

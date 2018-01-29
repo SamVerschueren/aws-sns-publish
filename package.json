@@ -25,6 +25,7 @@
     "publish"
   ],
   "dependencies": {
+    "is-aws-account-id": "^1.0.0",
     "is-e164-phone-number": "^1.0.0",
     "is-obj": "^1.0.0",
     "is-sns-topic-arn": "^1.0.0",
