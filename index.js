@@ -11,7 +11,7 @@ const snsPublish = pify(sns.publish.bind(sns));
 
 const isValidTopicName = input => /^[\w-]{1,255}$/.test(input);
 
-const convertObjectToAttributeMap = input => {
+const convertObjectToMessageAttributes = input => {
 	const result = {};
 
 	for (const key of Object.keys(input)) {
