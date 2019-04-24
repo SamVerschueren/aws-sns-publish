@@ -32,8 +32,8 @@
     "pify": "^2.3.0"
   },
   "devDependencies": {
-    "ava": "*",
-    "aws-sdk": "^2.2.33",
+    "ava": "^0.25.0",
+    "aws-sdk": "^2.441.0",
     "coveralls": "^2.13.0",
     "nyc": "^10.2.0",
     "sinon": "^1.17.2",
