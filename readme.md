@@ -106,7 +106,7 @@ Default: `process.env.AWS_ACCOUNT_ID`
 
 AWS Account Id used when constructing the topic ARN when `name` is being used.
 
-#### messageAttributes
+#### attributes
 
 Type: `Object`
 

@@ -15,7 +15,8 @@ const convertObjectToMessageAttributes = input => {
 	const result = {};
 
 	for (const key of Object.keys(input)) {
-		let parsedValue = `${input[key]}`;
+		const value = input[key];
+		let parsedValue = `${value}`;
 		let dataType = 'String';
 
 		if (Array.isArray(value)) {
@@ -83,8 +84,8 @@ module.exports = (message, opts) => {
 		params.Subject = opts.subject;
 	}
 
-	if (opts.messageAttributes) {
-		params.MessageAttributes = convertObjectToAttributeMap(opts.messageAttributes);
+	if (opts.attributes) {
+		params.MessageAttributes = convertObjectToMessageAttributes(opts.attributes);
 	}
 
 	return snsPublish(params).then(data => data.MessageId);

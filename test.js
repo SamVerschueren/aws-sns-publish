@@ -81,7 +81,7 @@ test.serial('phone, topic and subject', async t => {
 });
 
 test.serial('message attributes - string', async t => {
-	await m(JSON.stringify({foo: 'foo'}), {arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic', json: true, messageAttributes: {bar: 'bar'}});
+	await m(JSON.stringify({foo: 'foo'}), {arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic', json: true, attributes: {bar: 'bar'}});
 
 	t.deepEqual(sns.publish.lastCall.args[0], {
 		Message: '{"foo":"foo"}',
@@ -96,7 +96,7 @@ test.serial('message attributes - string', async t => {
 });
 
 test.serial('message attributes - string array', async t => {
-	await m(JSON.stringify({foo: 'bar'}), {arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic', json: true, messageAttributes: {bar: ['bar']}});
+	await m(JSON.stringify({foo: 'bar'}), {arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic', json: true, attributes: {bar: ['bar']}});
 
 	t.deepEqual(sns.publish.lastCall.args[0], {
 		Message: '{"foo":"bar"}',
@@ -111,7 +111,7 @@ test.serial('message attributes - string array', async t => {
 });
 
 test.serial('message attributes - number', async t => {
-	await m(JSON.stringify({foo: 'bar'}), {arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic', json: true, messageAttributes: {bar: 0}});
+	await m(JSON.stringify({foo: 'bar'}), {arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic', json: true, attributes: {bar: 0}});
 
 	t.deepEqual(sns.publish.lastCall.args[0], {
 		Message: '{"foo":"bar"}',
@@ -126,7 +126,7 @@ test.serial('message attributes - number', async t => {
 });
 
 test.serial('message attributes - number array', async t => {
-	await m(JSON.stringify({foo: 'bar'}), {arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic', json: true, messageAttributes: {bar: [0]}});
+	await m(JSON.stringify({foo: 'bar'}), {arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic', json: true, attributes: {bar: [0]}});
 
 	t.deepEqual(sns.publish.lastCall.args[0], {
 		Message: '{"foo":"bar"}',
@@ -141,7 +141,7 @@ test.serial('message attributes - number array', async t => {
 });
 
 test.serial('message attributes - boolean', async t => {
-	await m(JSON.stringify({foo: 'bar'}), {arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic', json: true, messageAttributes: {bar: true}});
+	await m(JSON.stringify({foo: 'bar'}), {arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic', json: true, attributes: {bar: true}});
 
 	t.deepEqual(sns.publish.lastCall.args[0], {
 		Message: '{"foo":"bar"}',
@@ -156,7 +156,7 @@ test.serial('message attributes - boolean', async t => {
 });
 
 test.serial('message attributes - boolean array', async t => {
-	await m(JSON.stringify({foo: 'bar'}), {arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic', json: true, messageAttributes: {bar: [true]}});
+	await m(JSON.stringify({foo: 'bar'}), {arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic', json: true, attributes: {bar: [true]}});
 
 	t.deepEqual(sns.publish.lastCall.args[0], {
 		Message: '{"foo":"bar"}',
