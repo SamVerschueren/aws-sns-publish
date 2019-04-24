@@ -11,28 +11,28 @@ const snsPublish = pify(sns.publish.bind(sns));
 
 const isValidTopicName = input => /^[\w-]{1,255}$/.test(input);
 
-const convertObjectToAttributeMap = input => Object.entries(input).reduce((previous, [key, value]) => {
-	let parsedValue = `${value}`;
-	let dataType = 'String';
+const convertObjectToAttributeMap = input => {
+	const result = {};
 
-	if (Array.isArray(value)) {
-		dataType = 'String.Array';
-		parsedValue = JSON.stringify(value);
-	} else if (typeof value === 'number') {
-		dataType = 'Number';
-	}
+	for (const key of Object.keys(input)) {
+		let parsedValue = `${input[key]}`;
+		let dataType = 'String';
 
-	return Object.assign({}, previous, {
-		DataType: dataType,
-		StringValue: parsedValue
-	});
-		...previous,
-		[key]: {
+		if (Array.isArray(value)) {
+			dataType = 'String.Array';
+			parsedValue = JSON.stringify(value);
+		} else if (typeof value === 'number') {
+			dataType = 'Number';
+		}
+
+		result[key] = {
 			DataType: dataType,
 			StringValue: parsedValue
-		}
-	};
-}, {});
+		};
+	}
+
+	return result;
+};
 
 module.exports = (message, opts) => {
 	opts = Object.assign({
