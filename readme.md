@@ -108,7 +108,7 @@ AWS Account Id used when constructing the topic ARN when `name` is being used.
 
 #### messageAttributes
 
-Type: `object`
+Type: `Object`
 
 Object which defines the message attributes to be set.
 
