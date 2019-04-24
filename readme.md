@@ -39,6 +39,11 @@ snsPublish('SMS Message', {phone: '+14155552671'}).then(messageId => {
 	console.log(messageId);
 	//=> '6014fe16-26c1-11e7-93ae-92361f002671'
 });
+
+snsPublish('Hello World', {arn: 'arn:aws:sns:us-west-2:111122223333:MyTopic', messageAttributes: {hello: 'world'}}).then(messageId => {
+	console.log(messageId);
+	//=> 'ef5835d5-8a4b-4e8b-beff-6ccc314d2f6d'
+});
 ```
 
 
@@ -101,6 +106,11 @@ Default: `process.env.AWS_ACCOUNT_ID`
 
 AWS Account Id used when constructing the topic ARN when `name` is being used.
 
+#### attributes
+
+Type: `Object`
+
+Key-value map defining the message attributes of the SNS message.
 
 ## License
 
