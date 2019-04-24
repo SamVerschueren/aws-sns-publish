@@ -22,7 +22,10 @@ const convertObjectToAttributeMap = input => Object.entries(input).reduce((previ
 		dataType = 'Number';
 	}
 
-	return {
+	return Object.assign({}, previous, {
+		DataType: dataType,
+		StringValue: parsedValue
+	});
 		...previous,
 		[key]: {
 			DataType: dataType,
