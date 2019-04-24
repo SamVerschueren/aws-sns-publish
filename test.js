@@ -1,6 +1,6 @@
 import test from 'ava';
 import sns from './fixtures/stub-sns';
-import m from './';
+import m from '.';
 
 test.beforeEach(() => {
 	delete process.env.AWS_ACCOUNT_ID;

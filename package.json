@@ -39,6 +39,9 @@
     "sinon": "^1.17.2",
     "xo": "*"
   },
+  "peerDependencies": {
+    "aws-sdk": "^2.2.33"
+  },
   "nyc": {
     "exclude": [
       "fixtures"
