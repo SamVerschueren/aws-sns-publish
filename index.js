@@ -11,6 +11,26 @@ const snsPublish = pify(sns.publish.bind(sns));
 
 const isValidTopicName = input => /^[\w-]{1,255}$/.test(input);
 
+const convertObjectToAttributeMap = input => Object.entries(input).reduce((previous, [key, value]) => {
+	let parsedValue = `${value}`;
+	let dataType = 'String';
+
+	if (Array.isArray(value)) {
+		dataType = 'String.Array';
+		parsedValue = JSON.stringify(value);
+	} else if (typeof value === 'number') {
+		dataType = 'Number';
+	}
+
+	return {
+		...previous,
+		[key]: {
+			DataType: dataType,
+			StringValue: parsedValue
+		}
+	};
+}, {});
+
 module.exports = (message, opts) => {
 	opts = Object.assign({
 		region: process.env.AWS_REGION,
@@ -58,6 +78,10 @@ module.exports = (message, opts) => {
 
 	if (opts.subject) {
 		params.Subject = opts.subject;
+	}
+
+	if (opts.messageAttributes) {
+		params.MessageAttributes = convertObjectToAttributeMap(opts.messageAttributes);
 	}
 
 	return snsPublish(params).then(data => data.MessageId);
