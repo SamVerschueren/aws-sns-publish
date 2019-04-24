@@ -110,7 +110,7 @@ AWS Account Id used when constructing the topic ARN when `name` is being used.
 
 Type: `Object`
 
-Object which defines the message attributes to be set.
+Key-value map defining the message attributes of the SNS message.
 
 ## License
 
