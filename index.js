@@ -1,13 +1,9 @@
 'use strict';
 const AWS = require('aws-sdk');
-const pify = require('pify');
 const isTopicArn = require('is-sns-topic-arn');
 const isObject = require('is-obj');
 const isPhoneNumber = require('is-e164-phone-number');
 const isAwsAccountId = require('is-aws-account-id');
-
-const sns = new AWS.SNS();
-const snsPublish = pify(sns.publish.bind(sns));
 
 const isValidTopicName = input => /^[\w-]{1,255}$/.test(input);
 
@@ -35,58 +31,63 @@ const convertObjectToMessageAttributes = input => {
 	return result;
 };
 
-module.exports = (message, opts) => {
-	opts = Object.assign({
+module.exports = async (message, opts) => {
+	const options = {
 		region: process.env.AWS_REGION,
-		accountId: process.env.AWS_ACCOUNT_ID
-	}, opts);
+		accountId: process.env.AWS_ACCOUNT_ID,
+		...opts
+	};
 
 	if (!message) {
 		return Promise.reject(new TypeError('Please provide a message'));
 	}
 
-	if (!opts.arn && !opts.name && !opts.phone) {
+	if (!options.arn && !options.name && !options.phone) {
 		return Promise.reject(new Error('Please provide an `arn`, `name` or `phone` number'));
 	}
 
-	if (opts.phone && !isPhoneNumber(opts.phone)) {
-		return Promise.reject(new Error(`Provided number \`${opts.phone}\` is not a valid E. 164 phone number`));
+	if (options.phone && !isPhoneNumber(options.phone)) {
+		return Promise.reject(new Error(`Provided number \`${options.phone}\` is not a valid E. 164 phone number`));
 	}
 
-	if (!opts.arn && opts.name && !isValidTopicName(opts.name)) {
-		return Promise.reject(new Error(`Provided topic name \`${opts.name}\` is not valid`));
+	if (!options.arn && options.name && !isValidTopicName(options.name)) {
+		return Promise.reject(new Error(`Provided topic name \`${options.name}\` is not valid`));
 	}
 
-	if (opts.name && !isAwsAccountId(opts.accountId)) {
+	if (options.name && !isAwsAccountId(options.accountId)) {
 		return Promise.reject(new Error('Provide a valid AWS account ID'));
 	}
 
-	if (opts.name && !opts.region) {
+	if (options.name && !options.region) {
 		return Promise.reject(new Error('Provide a `region`'));
 	}
 
 	const params = {
-		Message: opts.json !== true && isObject(message) ? JSON.stringify(message) : message
+		Message: options.json !== true && isObject(message) ? JSON.stringify(message) : message
 	};
 
-	if (opts.arn) {
-		const arnType = isTopicArn(opts.arn) ? 'TopicArn' : 'TargetArn';
-		params[arnType] = opts.arn;
-	} else if (opts.name) {
-		params.TopicArn = `arn:aws:sns:${opts.region}:${opts.accountId}:${opts.name}`;
+	if (options.arn) {
+		const arnType = isTopicArn(options.arn) ? 'TopicArn' : 'TargetArn';
+		params[arnType] = options.arn;
+	} else if (options.name) {
+		params.TopicArn = `arn:aws:sns:${options.region}:${options.accountId}:${options.name}`;
 	}
 
-	if (opts.phone) {
-		params.PhoneNumber = opts.phone;
+	if (options.phone) {
+		params.PhoneNumber = options.phone;
 	}
 
-	if (opts.subject) {
-		params.Subject = opts.subject;
+	if (options.subject) {
+		params.Subject = options.subject;
 	}
 
-	if (opts.attributes) {
-		params.MessageAttributes = convertObjectToMessageAttributes(opts.attributes);
+	if (options.attributes) {
+		params.MessageAttributes = convertObjectToMessageAttributes(options.attributes);
 	}
 
-	return snsPublish(params).then(data => data.MessageId);
+	const sns = new AWS.SNS();
+
+	const data = await sns.publish(params).promise();
+
+	return data.MessageId;
 };

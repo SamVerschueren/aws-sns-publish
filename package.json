@@ -28,19 +28,18 @@
     "is-aws-account-id": "^1.0.0",
     "is-e164-phone-number": "^1.0.0",
     "is-obj": "^1.0.0",
-    "is-sns-topic-arn": "^1.0.0",
-    "pify": "^2.3.0"
+    "is-sns-topic-arn": "^1.0.0"
   },
   "devDependencies": {
     "ava": "^0.25.0",
-    "aws-sdk": "^2.441.0",
+    "aws-sdk": "^2.610.0",
     "coveralls": "^2.13.0",
     "nyc": "^10.2.0",
-    "sinon": "^1.17.2",
+    "sinon": "^8.1.1",
     "xo": "^0.25.3"
   },
   "peerDependencies": {
-    "aws-sdk": "^2.2.33"
+    "aws-sdk": "^2.610.0"
   },
   "nyc": {
     "exclude": [
